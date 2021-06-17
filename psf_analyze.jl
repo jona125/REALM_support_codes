@@ -8,6 +8,7 @@ function psf_analyze(disk,date)
 	cd("/home/jchang/image/result/")
 	files=readdir()
 	filelist=filter(x->occursin("-bi.tif",x),files)
+	filelist=filter(x->occursin("um",x),filelist)
 	filelist=filter(x->occursin(@sprintf("%s",date),x),filelist)
 	@show filelist
 	

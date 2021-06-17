@@ -17,7 +17,7 @@ end
 
 function fwhm(data,b_mean,b_std)
         max_d = maximum(data) - b_mean
-        mid_d = findmid(data)
+        mid_d = Int(floor(findmid(data)))
         half_value = max_d /2 + b_mean
         sigma = zeros(2,1)
 	# find left edge with signal
@@ -28,8 +28,8 @@ function fwhm(data,b_mean,b_std)
                 end
         end
 	# find right edge with signal
-        for i in mid_d:length(data)-1
-                if data[i] >= half_value && data[i+1] <= half_value
+        for i in 1:mid_d-1
+                if data[end-i] >= half_value && data[end-i+1] <= half_value
                         sigma[2] = i
                         break
                 end
@@ -75,13 +75,13 @@ for k in 1:size(filelist,1)
 	width_temp = []
 	pos_temp = []
 	# loop through every frame
-	for i in 1:size(exp,3)
+	for i in 10:size(exp,3)
 		img1 = exp[:,:,i]
 		img2 = convert(Array{N0f16}, img1)
 		line = mean(img2,dims=2)
 		b_std = std(line)
 		# skip frames without signal
-		if(b_std < b_mean/5 && flag == 0) 
+		if(b_std < b_mean/3 && flag == 0) 
 			continue 
 		end
 		# change flag and record signal starting point
