@@ -17,24 +17,26 @@ end
 
 function fwhm(data,b_mean,b_std)
         max_d = maximum(data) - b_mean
-        mid_d = Int(floor(findmid(data)))
-        half_value = max_d /2 + b_mean
+        #mid_d = Int(floor(findmid(data)))
+	mid_d = argmax(data)[1]
+        #half_value = max_d /2 + b_mean
+	half_value = b_mean + b_std
         sigma = zeros(2,1)
 	# find left edge with signal
         for i in 1:mid_d-1
-                if data[mid_d-i] <= half_value && data[mid_d-i+1] >= half_value
-                        sigma[1] = mid_d - i
+                if data[i] <= half_value && data[i+1] >= half_value
+                        sigma[1] = i
                         break
                 end
         end
 	# find right edge with signal
-        for i in 1:mid_d-1
+        for i in 1:size(data,1) - mid_d-1
                 if data[end-i] >= half_value && data[end-i+1] <= half_value
-                        sigma[2] = i
+                        sigma[2] = size(data,1) - i
                         break
                 end
         end
-        return (sigma[2] - sigma[1]), mid_d
+        return (sigma[2] - sigma[1]), (sigma[1]+sigma[2])/2
 end
 
 
