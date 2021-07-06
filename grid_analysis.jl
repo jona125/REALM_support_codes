@@ -89,7 +89,7 @@ pos_range = []
 # loop through every image
 for k in 1:size(filelist,1)
 	filename=filelist[k][1:end-4]
-	push!(z_list,parse(Int,filename[14:end-5]))
+	push!(z_list,parse(Int,filename[14:end-3]))
 	exp = load(@sprintf("%s.tif", filename))
 	exp = Float32.(exp)
 	b_mean = mean(exp)
