@@ -20,7 +20,7 @@ function psf_analyze(img,filename)
 	result = []
 	open(@sprintf("%s-beads_psf.txt",filename[10:end]),"w") do g
 	count = 0
-	@showprogress @sprintf("Range calculation of Record %s...",filename) for t in 1:size(exp,3)
+	@showprogress @sprintf("Range calculation of Record %s...",filename) for t in 1:size(img,3)
 		img2 = img[:,:,t]
 		beads_x = []
 		beads_y = []

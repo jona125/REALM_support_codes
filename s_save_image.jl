@@ -16,9 +16,7 @@ function transfertotif(img,filename,r = 0,l = 15)
 				end
 			end
 		end
-		img3=convert(Array{N0f16}, img1)
-		img3=colorview(Gray,img3)
-	FileIO.save(File{format"TIFF"}(@sprintf("%s_%d.tif", filename,f)), img3)
+		img_save(img1,pwd(),@sprintf("%s_%d.tif", filename,f))
 	end
 end
 

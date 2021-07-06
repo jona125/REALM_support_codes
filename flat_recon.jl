@@ -1,10 +1,8 @@
 using Images,StaticArrays, FileIO, Printf, ProgressMeter, Statistics
+include("img_save.jl")
+
 
 function flat_recon(img,filename,step=9,Save=True)
-	path = pwd()	
-	cd("/home/jchang/image/result/")
-
-	#img_cut = img[400:2000,370:1120,:]
 	img_cut = img
 
 	(x,y,z) = size(img_cut)
@@ -30,11 +28,8 @@ function flat_recon(img,filename,step=9,Save=True)
 	#	end
 	#end
 
-
-	img_scale = Gray.(convert.(Normed{UInt16,16},img_re))
 	if Save
-		FileIO.save(File{format"TIFF"}(@sprintf("%s-.tif", filename)), img_scale)
+		img_save(img_re,"/home/jchang/image/result/",(@sprintf("%s-.tif", filename)))
 	end
-	cd(path)
 	return img_scale
 end

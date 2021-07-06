@@ -1,10 +1,9 @@
 using Images, StaticArrays, LinearAlgebra, Statistics
 using FileIO, ProgressMeter, Printf, ImageSegmentation
 #using Plots, ImageView
+include("img_save.jl")
 
 function BG_subtraction(exp,BG_filename,filename,Save)
-	path = pwd()	
-
 	img = load(@sprintf("%s.tif", BG_filename))
 	img1 = convert(Array{N0f16}, img)
 		
@@ -37,14 +36,10 @@ function BG_subtraction(exp,BG_filename,filename,Save)
 			end
 		end
 	end
-	img3 = Gray.(convert(Array{N0f16},filtered))
-	img4 = Gray.(convert.(Normed{UInt16,16},img3))
-	cd("/home/jchang/image/result/")
 	if Save
-		FileIO.save(File{format"TIFF"}(@sprintf("%s-bi.tif",filename)), img4)
+		img_save(filtered,"/home/jchang/image/result/",@sprintf("%s-bi.tif",filename))
 	end
-	cd(path)	
-	return img4
+	return filtered
 end	
 
 
