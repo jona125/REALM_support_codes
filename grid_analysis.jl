@@ -1,18 +1,10 @@
 using Images, StaticArrays, LinearAlgebra, Statistics
 using FileIO, ProgressMeter, Printf, ImageSegmentation
 #using Plots, ImageView
+
 include("s_save_image.jl")
 include("filter.jl")
-
-function findmid(data)
-	weighted_sum = 0
-	int_sum = 0
-	for i in 1:length(data)
-		weighted_sum += data[i] * i
-		int_sum += data[i]
-	end
-	return weighted_sum/int_sum
-end
+include("COM.jl")
 
 
 function fwhm(data,b_mean,b_std)
@@ -39,7 +31,6 @@ function fwhm(data,b_mean,b_std)
         return (sigma[2] - sigma[1]), (sigma[1]+sigma[2])/2
 end
 
-
 print("Disk label: ")
 label = chomp(readline())
 
@@ -48,11 +39,40 @@ date=chomp(readline())
 #date="20190315"
 @show date
 
-transfertotif(label,date) # save .imagine into .tif
-imfilter(label,date) # filter image with background signal
+cd(@sprintf("/mnt/%s/jchang/%s/",label,date))
+files=readdir()
+filelist=filter(x->occursin(".imagine",x),files)
+@show filelist
 
-print("File title: ")
-date=chomp(readline())
+print("add scale bar(Y as 1, N as 0): ")
+r=chomp(readline())
+r=parse(Int,r)
+
+l=0        
+if r == 1
+	print("The length of scale bar(in px): ")
+        l = chomp(readline())
+        l = parse(Int,l)
+end
+
+print("Background Filename: ")
+BG_filename = chomp(readline())
+
+if BG_filename == ""
+	BG_filename = filelist[1][1:end-8]
+end
+
+print("Save every file during process (1 as Yes, 0 as No): ")
+Save = chomp(readline())
+Save = (Save == "1")
+
+for k in 1:size(filelist,1)
+	filename=filelist[k][1:end-8]
+	exp = load(@sprintf("%s.imagine", filename))
+
+	transfertotif(exp,filename,r,l)
+	img = BG_subtraction(exp,BG_filename,filename,Save)
+end
 
 cd("/home/jchang/image/result")
 files=readdir()
