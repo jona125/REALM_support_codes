@@ -31,5 +31,5 @@ function flat_recon(img,filename,step=9,Save=True)
 	if Save
 		img_save(img_re,"/home/jchang/image/result/",(@sprintf("%s-.tif", filename)))
 	end
-	return img_scale
+	return img_re
 end

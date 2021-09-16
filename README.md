@@ -34,3 +34,5 @@ stack.jl: stack different YZ, XZ cross section of image.
 time.jl: collect time series of certain z plane.
 
 swipe_analysis.jl: calculate swipe speed and range through grid sample.
+
+COM.jl: calculate center of mass.
