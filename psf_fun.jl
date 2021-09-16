@@ -1,4 +1,6 @@
 using Images, StaticArrays, Statistics, StatsBase
+THRESHOLD = 1.2
+
 
 function fwhm_axis(img, axis, b_mean)
 	x, y = size(img)
@@ -25,7 +27,7 @@ function fwhm_axis(img, axis, b_mean)
 		maxi = maximum(temp)
 		half = (maxi + b_mean)/2
 		mid = argmax(temp)
-		if half <= b_mean*1.2 # take away lines of background
+		if half <= b_mean*THRESHOLD # take away lines of background
 			continue
 		end
 		for idy in 1:mid-1
